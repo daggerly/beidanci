@@ -1,0 +1,28 @@
+{% extends "study.html" %}
+{% block title %}Study Word{% endblock %}
+{% block body %}
+    {% if danci %}
+    <form method="post">
+        <p>{{danci.word}}</p>
+        <p id="meaning" style="display:none">{{danci.meaning}}</p>
+        <input type="hidden" name="word" value="{{danci.word}}">
+        <p>
+            <span id="btnShowAnswer" onclick="show_answer()">看答案</span>
+            <button id="pass" type="submit" name="pass" value="aaa"
+                    style="display:none">会</button>
+            <button id="unpass" type="submit" name="unpass" value="aaa"
+                    style="display:none">记住了</button>
+        </p>
+    </form>
+    {% else %}
+    <p>没有要背的单词</p>
+    {% endif%}
+    <script type="text/javascript">
+        function show_answer(){
+            document.getElementById('btnShowAnswer').style.display='none';
+            document.getElementById('meaning').style.display='';
+            document.getElementById('unpass').style.display='';
+            document.getElementById('pass').style.display='';
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <style type="text/css">
+        * {margin:0px;padding:0px;font-size:30px}
+        body {text-align:center}
+        button {color: #fff;
+                border-radius: 3px;
+                border: none;}
+        #pass{background-color:#438E0B}
+        #unpass{background-color:#D44022}
+        #btnShowAnswer{
+                color: #fff;
+                border-radius: 3px;
+                border: none;
+                background-color:#66a3d2;
+                cursor: default;
+        }
+    </style>
+    {% block scripts %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+</html>
