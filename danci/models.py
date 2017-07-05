@@ -29,7 +29,7 @@ class AbstractRecord(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return self.danci
+        return unicode(self.danci)
 
 
     @staticmethod
