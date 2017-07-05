@@ -19,10 +19,11 @@ def study_word(request):
 def study_meaning(request):
     if request.method=='POST':
         word = request.POST['word']
+        result = request.POST['result']
         word = MeaningmodeRecord.objects.get(danci__word=word)
-        if 'pass' in request.POST:
+        if result == 'pass':
             word.passed()
-        elif 'unpass' in request.POST:
+        elif result == 'unpass':
             word.unpassed()
     d = get_word_to_learn(MEANING_MODE)
     return render_to_response('study_meaning.html',{'danci':d})
