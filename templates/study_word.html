@@ -2,27 +2,43 @@
 {% block title %}Study Word{% endblock %}
 {% block body %}
     {% if danci %}
-    <form method="post">
+    <form id="mainform" method="post">
         <p>{{danci.word}}</p>
         <p id="meaning" style="display:none">{{danci.meaning}}</p>
         <input type="hidden" name="word" value="{{danci.word}}">
         <p>
             <span id="btnShowAnswer" onclick="show_answer()">看答案</span>
-            <button id="pass" type="submit" name="pass" value="aaa"
-                    style="display:none">会</button>
-            <button id="unpass" type="submit" name="unpass" value="aaa"
-                    style="display:none">记住了</button>
+            <span id="pass" style="display:none">正确</span>
+            <span id="unpass" style="display:none">错误</span>
+            <input id="result" type="hidden" name="result">
         </p>
     </form>
     {% else %}
     <p>没有要背的单词</p>
     {% endif%}
     <script type="text/javascript">
+        document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];;
+            if(e&& e.keyCode==13){  //回车
+                show_answer();
+            }
+        };
+        function after_show_answer(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];;
+            if(e&& e.keyCode==13){  //回车,错误
+                document.getElementById("result").value='unpass';
+                document.getElementById("mainform").submit();
+            }else if(e&& e.keyCode==32){  //空格,正确
+                document.getElementById("result").value='pass';
+                document.getElementById("mainform").submit();
+            }
+        };
         function show_answer(){
             document.getElementById('btnShowAnswer').style.display='none';
             document.getElementById('meaning').style.display='';
             document.getElementById('unpass').style.display='';
             document.getElementById('pass').style.display='';
+            document.onkeydown=after_show_answer;
         }
     </script>
 {% endblock %}

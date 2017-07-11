@@ -8,10 +8,11 @@ from danci.models import ( WordmodeRecord, MeaningmodeRecord,
 def study_word(request):
     if request.method=='POST':
         word = request.POST['word']
+        result = request.POST['result']
         word = WordmodeRecord.objects.get(danci__word=word)
-        if 'pass' in request.POST:
+        if result == 'pass':
             word.passed()
-        elif 'unpass' in request.POST:
+        elif result == 'unpass':
             word.unpassed()
     d = get_word_to_learn(WORD_MODE)
     return render_to_response('study_word.html',{'danci':d})
