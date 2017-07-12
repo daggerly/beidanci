@@ -9,7 +9,7 @@
         <p>{{danci.meaning}}</p>
         <p id="word" style="display:none">{{danci.word}}</p>
         <input type="hidden" name="word" value="{{danci.word}}">
-        <p><input type="text" style="text-align:center"></p>
+        <p><input id="answer" type="text" style="text-align:center"></p>
         <p>
             <span id="btnShowAnswer" onclick="show_answer()" >
                 看答案
@@ -24,6 +24,7 @@
     <p>没有要背的单词</p>
     {% endif%}
     <script type="text/javascript">
+        document.getElementById("answer").focus();
         document.onkeydown=function(event){
             var e = event || window.event || arguments.callee.caller.arguments[0];;
             if(e&& e.keyCode==13){  //回车
