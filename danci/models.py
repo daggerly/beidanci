@@ -73,34 +73,34 @@ class AbstractRecord(models.Model):
     def already_learned(self):
         return self.corrected >= 10
 
+    @classmethod
+    def get_word_to_learn(cls):
+        """
+        查找应该背的单词,先找背过的词,再找没背过的词
+        :param mode:
+        :return:
+        """
+        # 旧词
+        record = cls.objects.filter(learned=False, next_dt__lte=tznow()) \
+                .order_by('?').first()
+        if record:
+            return record.danci
+        # 新词
+        danci = Danci.objects.exclude(word__in=
+                cls.objects.all().values_list('danci__word', flat=True)
+                ).order_by('?').first()
+        if danci:
+            record = cls(danci=danci)
+            record.save()
+        return danci
 
 class WordmodeRecord(AbstractRecord):
-    pass
+    class Meta:
+        verbose_name = 'WordmodeRecord'
 class MeaningmodeRecord(AbstractRecord):
-    pass
+    class Meta:
+        verbose_name = 'MeaningmodeRecord'
 
-WORD_MODE = 0
-MEANING_MODE = 1
-MODE_CHOICES = {WORD_MODE: WordmodeRecord,
-                MEANING_MODE: MeaningmodeRecord}
 
-def get_word_to_learn(mode):
-    """
-    查找应该背的单词,先找背过的词,再找没背过的词
-    :param mode:
-    :return:
-    """
-    record_table = MODE_CHOICES[mode]
-    # 旧词
-    record = record_table.objects.filter(learned=False, next_dt__lte=tznow()) \
-            .order_by('?').first()
-    if record:
-        return record.danci
-    # 新词
-    danci = Danci.objects.exclude(word__in=
-            record_table.objects.all().values_list('danci__word', flat=True)
-            ).order_by('?').first()
-    if danci:
-        record = record_table(danci=danci)
-        record.save()
-    return danci
+RECORD_TYPES = {'WordmodeRecord': WordmodeRecord,
+                'MeaningmodeRecord': MeaningmodeRecord}

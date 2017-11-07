@@ -1,9 +1,9 @@
 #coding: utf-8
-from django.shortcuts import render_to_response
-from django.http import HttpResponse
+from django.contrib import messages
+from django.shortcuts import render_to_response, redirect
 
-from danci.models import ( WordmodeRecord, MeaningmodeRecord,
-                          get_word_to_learn, WORD_MODE, MEANING_MODE)
+from danci.models import (WordmodeRecord, MeaningmodeRecord, Danci,
+                          RECORD_TYPES)
 
 def study_word(request):
     if request.method=='POST':
@@ -14,7 +14,7 @@ def study_word(request):
             word.passed()
         elif result == 'unpass':
             word.unpassed()
-    d = get_word_to_learn(WORD_MODE)
+    d = WordmodeRecord.get_word_to_learn()
     return render_to_response('study_word.html',{'danci':d})
 
 def study_meaning(request):
@@ -26,8 +26,19 @@ def study_meaning(request):
             word.passed()
         elif result == 'unpass':
             word.unpassed()
-    d = get_word_to_learn(MEANING_MODE)
+    d = MeaningmodeRecord.get_word_to_learn()
     return render_to_response('study_meaning.html',{'danci':d})
 
-def add(request):
-    return HttpResponse('use admin')
+
+def synchronize_new_words(request, name):
+    record_model = RECORD_TYPES[name]
+    exist_words = record_model.objects.all().values_list('danci__word', flat=True)
+    new_words = Danci.objects.exclude(word__in=exist_words)
+    if new_words:
+        params = [record_model(danci=i) for i in new_words]
+        record_model.objects.bulk_create(params)
+        msg = '%d new words created' % len(params)
+    else:
+        msg = 'no more new words'
+    messages.add_message(request, messages.INFO, msg)
+    return redirect('admin:danci_%s_changelist'%name.lower())
