@@ -9,6 +9,8 @@ class DanciAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     list_display = ('danci', 'corrected', 'last_dt', 'next_dt', 'created_dt')
     ordering = ['next_dt']
+    actions_on_top = False
+    actions_on_bottom = True
 
 class WordmodeRecordAdmin(RecordAdmin):
     pass
