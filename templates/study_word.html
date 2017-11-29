@@ -3,7 +3,7 @@
 {% block body %}
     {% if danci %}
     <form id="mainform" method="post">
-        <p>{{danci.word}}</p>
+        <p id="tip_info">{{danci.word}}</p>
         <p id="meaning" style="display:none">{{danci.meaning}}</p>
         <input type="hidden" name="word" value="{{danci.word}}">
         <p>
