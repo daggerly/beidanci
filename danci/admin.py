@@ -12,6 +12,11 @@ class RecordAdmin(admin.ModelAdmin):
     actions_on_top = False
     actions_on_bottom = True
 
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['WORDS_TO_LEARN_NUMBER'] = self.model.count_words_to_learn()
+        return super(RecordAdmin, self).changelist_view(request, extra_context=extra_context)
+
 class WordmodeRecordAdmin(RecordAdmin):
     pass
 

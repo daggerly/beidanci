@@ -81,8 +81,7 @@ class AbstractRecord(models.Model):
         :return:
         """
         # 旧词
-        record = cls.objects.filter(learned=False, next_dt__lte=tznow()) \
-                .order_by('?').first()
+        record = cls.get_words_to_learn().order_by('?').first()
         if record:
             return record.danci
         # 新词
@@ -94,9 +93,19 @@ class AbstractRecord(models.Model):
             record.save()
         return danci
 
+    @classmethod
+    def get_words_to_learn(cls):
+        return cls.objects.filter(learned=False, next_dt__lte=tznow())
+
+    @classmethod
+    def count_words_to_learn(cls):
+        return cls.get_words_to_learn().count()
+
+
 class WordmodeRecord(AbstractRecord):
     class Meta:
         verbose_name = 'WordmodeRecord'
+
 class MeaningmodeRecord(AbstractRecord):
     class Meta:
         verbose_name = 'MeaningmodeRecord'

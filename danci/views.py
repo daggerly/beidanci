@@ -15,7 +15,8 @@ def study_word(request):
         elif result == 'unpass':
             word.unpassed()
     d = WordmodeRecord.get_word_to_learn()
-    return render_to_response('study_word.html',{'danci':d})
+    words_to_learn_number = WordmodeRecord.count_words_to_learn()
+    return render_to_response('study_word.html',{'danci':d, 'WORDS_TO_LEARN_NUMBER': words_to_learn_number})
 
 def study_meaning(request):
     if request.method=='POST':
@@ -27,7 +28,8 @@ def study_meaning(request):
         elif result == 'unpass':
             word.unpassed()
     d = MeaningmodeRecord.get_word_to_learn()
-    return render_to_response('study_meaning.html',{'danci':d})
+    words_to_learn_number = MeaningmodeRecord.count_words_to_learn()
+    return render_to_response('study_meaning.html',{'danci':d, 'WORDS_TO_LEARN_NUMBER': words_to_learn_number})
 
 
 def synchronize_new_words(request, name):
