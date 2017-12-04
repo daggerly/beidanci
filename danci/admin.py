@@ -14,15 +14,10 @@ class RecordAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}
+        print self.model
         extra_context['WORDS_TO_LEARN_NUMBER'] = self.model.count_words_to_learn()
         return super(RecordAdmin, self).changelist_view(request, extra_context=extra_context)
 
-class WordmodeRecordAdmin(RecordAdmin):
-    pass
-
-class MeaningRecordAdmin(RecordAdmin):
-    pass
-
 admin.site.register(Danci, DanciAdmin)
-admin.site.register(WordmodeRecord, WordmodeRecordAdmin)
-admin.site.register(MeaningmodeRecord, MeaningRecordAdmin)
+admin.site.register(WordmodeRecord, RecordAdmin)
+admin.site.register(MeaningmodeRecord, RecordAdmin)
