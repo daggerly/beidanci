@@ -19,9 +19,9 @@ class AbstractRecord(models.Model):
     danci = models.ForeignKey(Danci, primary_key=True)
     corrected = models.PositiveSmallIntegerField(u'正确次数', default=0,)
     last_dt = models.DateTimeField(u'上次背', auto_now=True)
-    next_dt = models.DateTimeField(u'下次背', auto_now_add=True)
+    next_dt = models.DateTimeField(u'下次背', auto_now_add=True, db_index=True)
     created_dt = models.DateTimeField(u'创建', auto_now_add=True)
-    learned = models.BooleanField(u'掌握了', default=False)
+    learned = models.BooleanField(u'掌握了', default=False, db_index=True)
 
 
     class Meta:
